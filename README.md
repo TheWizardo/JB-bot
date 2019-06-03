@@ -21,11 +21,13 @@ As for now the bot is written in version 2.7.XX and will not work with version 3
 
 To run the bot for the first time you'll need the following files:
 * bot.py
+* helpers.py
+* bot_init.py
+* JBer.py
 * client_secret.json
 * client_secrets.json
 * quickstart_drv.py
 * quickstart_cal.py
-* JBbot-175e03ef959f.json
 * JB.csv
 
 # General Maintenance
