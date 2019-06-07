@@ -24,6 +24,13 @@ def Save_Newbies():
     pickle.dump(newbies, open("newbies.txt", 'w'))
 
 
+def Save_Nameies():
+    global nameies
+    namei = open("nameies.txt", 'w')
+    namei.close()
+    pickle.dump(nameies, open("nameies.txt", 'w'))
+
+
 def Save_Editors():
     global editing
     edits = open("editors.txt", 'w')
@@ -276,3 +283,10 @@ def get_keyboard(arr, col=1):
     if len(row) > 0:
         keyboard.append(row)
     return keyboard
+
+
+def Get_JB_by_id(num):
+    for Jber in JB_names:
+        if Jber.ID != 0:
+            if Jber.ID == num:
+                return Jber
