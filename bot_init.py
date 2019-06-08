@@ -21,6 +21,7 @@ grades = []
 activitors = {}
 editing = {}
 newbies = {}
+nameies = {}
 
 def Get_Newbies(): #{_id_:{"JBer":JB(_enName_,_heName_,_phone_,_role_,_bday_,_id_), "stage":_stage_}}
     newbies = {}
@@ -31,6 +32,17 @@ def Get_Newbies(): #{_id_:{"JBer":JB(_enName_,_heName_,_phone_,_role_,_bday_,_id
         if len(text) > 2:
             newbies = pickle.load(open("newbies.txt", 'r'))
     return newbies
+
+
+def Get_Nameies(): #{_id_:_letter_}
+    nameies = {}
+    if os.path.exists("nameies.txt"):
+        with open("nameies.txt", 'r') as nam:
+            text = nam.read().decode('utf8')
+            nam.close()
+        if len(text) > 2:
+            nameies = pickle.load(open("nameies.txt", 'r'))
+    return nameies
 
 
 def Get_Editors(): #{_id_:{"JBer":JB(_enName_,_heName_,_phone_,_role_,_bday_,_id_), "field":_parameter_, "change":_change_}}
