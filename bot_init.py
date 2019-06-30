@@ -155,6 +155,8 @@ def refresh():
             if not os.path.exists(work_dir + folder + "\\" + File):
                 download_file_from_google_drive(folders[folder][File]["file_id"], work_dir + folder + "\\" + File)
 
+    return JB_names, newbies, editing, activitors, folders, energizers, lullaby, grades
+
 refresh()
 TT_group_id = -1001137610324
 JB_group_id = -13773512

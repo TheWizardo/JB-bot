@@ -225,7 +225,7 @@ def add_to_file(jb):
             role += r + ", "
         role = role[0:len(role) - 2]
         bday = str(jb.Birthdate.replace("-", "_"))
-        text = chr(10)+"{},{},{},{},{},{}".format(EN_name, HE_name, phone, role, bday, str(jb.User_ID))
+        text = chr(10)+"{},{},{},{},{},{}".format(EN_name, HE_name, phone, role, bday, str(jb.ID))
         with open("JB.csv", "a") as csvf:
             csvf.write(text)
             csvf.close()
@@ -235,7 +235,7 @@ def add_to_file(jb):
         for r in jb.Roles:
             role += r + ", "
         role = role[0:len(role) - 2]
-        text = chr(10)+"{}/{}/{}/{}/{}/{}".format(jb.English_Name, jb.Hebrew_Name.encode("utf-8"), jb.Phone_Number, role, jb.Birthdate, str(jb.User_ID))
+        text = chr(10)+"{}/{}/{}/{}/{}/{}".format(jb.En_Name, jb.He_Name.encode("utf-8"), jb.Phone, role, jb.Birthday, str(jb.ID))
         with open("JB.txt", "a") as txtf:
             txtf.write(text)
             txtf.close()
