@@ -159,7 +159,7 @@ def refresh():
 
 refresh()
 TT_group_id = -1001137610324
-JB_group_id = -13773512
+JB_group_id = -1001347723461
 Oz_id = 118435275
 month_arr = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 brday = str(datetime.datetime.now().day) + "-" + str(datetime.datetime.now().month)
