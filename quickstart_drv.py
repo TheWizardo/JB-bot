@@ -126,7 +126,7 @@ def main():
     if not items:
         print('No files found.')
     else:
-        print(getFolders())
+        print(getFolders().keys())
 
 if __name__ == '__main__':
     main()

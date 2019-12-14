@@ -9,7 +9,7 @@ import os.path
 import os
 import pickle
 
-work_dir = os.getcwd() + "\\"
+work_dir = "C:\\Users\\sabba\\Downloads\\JB-bot-master(1)\\JB-bot-master\\"#os.getcwd() + "\\"
 grades_arr = ["fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "JA", "JB!!!"]
 
 JB_names = []
@@ -26,64 +26,63 @@ nameies = {}
 def Get_Newbies(): #{_id_:{"JBer":JB(_enName_,_heName_,_phone_,_role_,_bday_,_id_), "stage":_stage_}}
     newbies = {}
     if os.path.exists("newbies.txt"):
-        with open("newbies.txt", 'r') as newb:
+        with open( work_dir + "newbies.txt", 'r') as newb:
             text = newb.read().decode('utf8')
             newb.close()
         if len(text) > 2:
-            newbies = pickle.load(open("newbies.txt", 'r'))
+            newbies = pickle.load(open( work_dir + "newbies.txt", 'r'))
     return newbies
 
 
 def Get_Nameies(): #{_id_:_letter_}
     nameies = {}
     if os.path.exists("nameies.txt"):
-        with open("nameies.txt", 'r') as nam:
+        with open( work_dir + "nameies.txt", 'r') as nam:
             text = nam.read().decode('utf8')
             nam.close()
         if len(text) > 2:
-            nameies = pickle.load(open("nameies.txt", 'r'))
+            nameies = pickle.load(open( work_dir + "nameies.txt", 'r'))
     return nameies
 
 
 def Get_Editors(): #{_id_:{"JBer":JB(_enName_,_heName_,_phone_,_role_,_bday_,_id_), "field":_parameter_, "change":_change_}}
     edits = {}
     if os.path.exists("editors.txt"):
-        with open("editors.txt", 'r') as edit:
+        with open( work_dir + "editors.txt", 'r') as edit:
             text = edit.read()
             edit.close()
         if len(text) > 2:
-            edits = pickle.load(open("editors.txt", 'r'))
+            edits = pickle.load(open( work_dir + "editors.txt", 'r'))
     return edits
 
 
 def Get_Activitors(): #{_id_:{"grade":_grade_, "tags":[_tags_], "messageID":_messageId_, "files":{_fileName_:_fileID_}}}
     acts = {}
     if os.path.exists("activitors.txt"):
-        with open("activitors.txt", 'r') as act:
+        with open( work_dir + "activitors.txt", 'r') as act:
             text = act.read()
             act.close()
         if len(text) > 2:
-            acts = pickle.load(open("activitors.txt", 'r'))
+            acts = pickle.load(open( work_dir + "activitors.txt", 'r'))
     return acts
 
 
 def Get_Contacts():
     jb_arr = []
+    print(work_dir)
     if os.path.exists(work_dir + "\\JB.csv"):
-        print "Reading CSV"
-        with open("JB.csv","rb") as csvf:
-            dialect = csv.Sniffer().sniff(csvf.read())
-            csvf.seek(0)
-            reader = csv.reader(csvf, dialect)
+        print("Reading CSV")
+        with open( work_dir + "JB.csv","rb") as csvf:
+            reader = csvf.read().decode("hebrew").split("\r\n")
             for jber in reader:
-                if jber != []:
+                if len(jber) > 0:
                     jber_roles = []
                     for r in jber[3].split("$"):
                         jber_roles.append(r)
                     uid = 0
                     try:
                         uid = int(jber[5])
-                    except Exception, e:
+                    except Exception as e:
                         pass
                     try:
                         jb_arr.append(JBer(English_Name=jber[0],Hebrew_Name=jber[1].decode("hebrew").encode("utf8"),Phone_Number="+"+jber[2],Roles=jber_roles,Birthdate=jber[4].replace("_","-"),ID=uid))
@@ -91,8 +90,8 @@ def Get_Contacts():
                         jb_arr.append(JBer(English_Name=jber[0],Hebrew_Name=jber[1],Phone_Number="+"+jber[2],Roles=jber_roles,Birthdate=jber[4].replace("_","-"),ID=uid))
         return jb_arr
     elif os.path.exists(work_dir + "\\JB.txt"):
-        print "Reading TXT"
-        with open("JB.txt", "r") as fil:
+        print("Reading TXT")
+        with open( work_dir + "JB.txt", "r") as fil:
             JBlist = fil.read().split(chr(10))
             fil.close()
         for jb in JBlist:
@@ -108,14 +107,13 @@ def Get_Contacts():
             except Exception:
                 pass
             jb_arr.append(JBer(English_Name=jber[0],Hebrew_Name=hebname,Phone_Number=jber[2],Roles=jber_roles,Birthdate=jber[4],ID=uid))
-        with open("logs.txt", "a") as logf:
+        with open( work_dir + "logs.txt", "a") as logf:
             logf.write("started the bot\n")
             logf.close()
         return jb_arr
     else:
-        print "there is no file from which I can get the contacts."
-        print "check to see if the file is under the same folder as this file"
-        os.exit()
+        print("there is no file from which I can get the contacts.")
+        print("check to see if the file is under the same folder as this file")
 
 
 def refresh():
@@ -159,9 +157,9 @@ def refresh():
 
 refresh()
 TT_group_id = -1001137610324
-JB_group_id = -13773512
+JB_group_id = -1001347723461
 Oz_id = 118435275
 month_arr = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 brday = str(datetime.datetime.now().day) + "-" + str(datetime.datetime.now().month)
 en_programmes = ["Village (11)", "Interchange (12-15)", "Step-Up (14-15)", "Seminar-Camp (17-18)", "Youth-Meeting (12-19+)", "Mosaic (All ages)", "International-Peoples-Project (19+)"]
-wishes = ["ימי הולדת הם הדרך של הטבע להגיד לנו לאכול עוד עוגות,","אומרים שכשאתה מתבגר אתה מאבד שלושה דברים, הראשון הוא הזיכרון ושכחתי את השניים האחרים,","מחקרים מראים שככל שיש יותר ימי הולדת, חיים יותר שנים,"]
+wishes = ["ימי הולדת הם הדרך של הטבע להגיד לנו לאכול עוד עוגות,","אומרים שכשאתה מתבגר אתה מאבד שלושה דברים, הראשון הוא הזיכרון ושכחתי את השניים האחרים,","מחקרים מראים שככל שיש יותר ימי הולדת, חיים יותר שנים,","כמעט שלחתי לך כרטיס ברכה בדואר, אבל למזלי החיבור לאינטרנט חזר,","(הכנס ברכה מרגשת כאן),","הידעת? יום הולדת יש גם פעם בשנה וגם כל 365 ימים,"]

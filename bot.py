@@ -2,6 +2,7 @@
 # ^enables you to use non english chars
 # -*- coding: iso-8859-15 -*-
 # ^enables you to send emojis
+print("hello world")
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, JobQueue
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
@@ -31,8 +32,8 @@ def start(bot, update):
     try:
         iknow = InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/start' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/start' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/start' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -54,8 +55,8 @@ def start(bot, update):
                             found = False
                             break
                     if found:
-                        print "found a match with " + name + "'s phone @ " + str(datetime.datetime.now())
-                        logs = open("logs.txt","a")
+                        print("found a match with " + name + "'s phone @ " + str(datetime.datetime.now()))
+                        logs = open( work_dir + "logs.txt","a")
                         if not is_ascii(name):
                             logs.write("found a match with nonASCII's phone @ " + str(datetime.datetime.now()) + "\n")
                         else:
@@ -70,7 +71,7 @@ def start(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text="I don't know who you are.\n use /add_jber to add yourself to the JB list or contact Oz Sabbag @sexycow69 for help.")
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -81,10 +82,10 @@ def new_member(bot, update):
             InFile(bot, update)
             if len(update.message.new_chat_members) == 1:
                 if update.message.new_chat_members[-1].first_name != "JBbot":
-                    logs = open("logs.txt","a")
+                    logs = open( work_dir + "logs.txt","a")
                     logs.write(update.message.new_chat_members[-1].first_name + " was added to the group\n")
                     logs.close()
-                    print update.message.new_chat_members[-1].first_name + " was added to the group"
+                    print(update.message.new_chat_members[-1].first_name + " was added to the group")
                     if not bool(update.message.new_chat_members[-1].is_bot):
                         txt = "Hello human No. " + str(update.message.new_chat_members[-1].id) + " named " + update.message.new_chat_members[-1].first_name + " I'm JBbot!\nhave I told you that you look stunning today?"
                     else:
@@ -99,7 +100,7 @@ def new_member(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text="Welcome to all!\nPlease PM me @jbisrael_bot so I can add you to the JB list ")
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -113,10 +114,10 @@ def leaving(bot, update):
                 name = left.first_name + " " + left.last_name
             except Exception:
                 name = left.first_name
-            logs = open("logs.txt","a")
+            logs = open( work_dir + "logs.txt","a")
             logs.write(name + " has left the group\n")
             logs.close()
-            print name + " has left the group"
+            print(name + " has left the group")
             
             with open(work_dir + "JBtest.csv","r") as csvfile:
                 allJB = csvfile.read()
@@ -154,12 +155,12 @@ def leaving(bot, update):
                 try:
                     Refresh_Command(bot, query)
                     os.remove(work_dir + "PrevJB.csv") 
-                except Exception, e:
+                except Exception as e:
                     bot.send_message(text="wasn't able to apply the edit.\nError: " + str(e), chat_id=update.message.chat_id)
             else:
                 bot.send_message(chat_id=Oz_id, text="I don't know who left, I couldn't find %s id" % name)    
                 bot.send_message(chat_id=Oz_id, text="the id is %s" % ID)  
-        except Exception, e:    
+        except Exception as e:    
             bot.send_message(chat_id=Oz_id, text="I had problems with deleting ID:" + ID + " from the file.\nError: " + str(e))
 
 
@@ -185,7 +186,7 @@ def button_prog(bot, update):
                 for l in leaders:
                     txt += l + ", "
                 txt = txt[:-2]
-                txt += "\nIf you need to contact any one of them, use /jb_phone <name>"
+                txt += "\nIf you need to contact any one of them, use /jb_phone"
             else:
                 txt = "There are no leaders for the " + grades_arr[query_data] + " grade\nWhat will we do???"
             bot.edit_message_text(text=txt, chat_id=query.message.chat_id, message_id=query.message.message_id)
@@ -269,7 +270,7 @@ def button_prog(bot, update):
                 try:
                     Refresh_Command(bot, query)
                     os.remove(work_dir + "PrevJB.csv")
-                except Exception, e:
+                except Exception as e:
                     bot.send_message(text="wasn't able to apply the edit.\nError: " + str(e), chat_id=query.message.chat_id)
         if query_type == "Edit":
             query_data = int(query_data)
@@ -296,7 +297,7 @@ def button_prog(bot, update):
             else:
                 bot.edit_message_text(text="OK, I'm changing the data...", chat_id=query.message.chat_id, message_id=query.message.message_id)
                 NAME = query_data.split('-')[1]
-                with open("JB.csv","r") as csvfile:
+                with open( work_dir + "JB.csv","r") as csvfile:
                     allJB = csvfile.read()
                     csvfile.close()
                 os.rename(work_dir + "JB.csv", work_dir + "PrevJB.csv")
@@ -324,13 +325,13 @@ def button_prog(bot, update):
                 for i in range(1, len(jber)):
                     jb += jber[i] + "\n"
                 jb = jb[:len(jb) - 1] # building up the rest of the string
-                with open("JB.csv","w") as csvfile:
+                with open( work_dir + "JB.csv","w") as csvfile:
                     csvfile.write(jb) #overwriting the old info with the new one
                     csvfile.close()
                 try:
                     Refresh_Command(bot, query)
                     os.remove(work_dir + "PrevJB.csv")
-                except Exception, e:
+                except Exception as e:
                     bot.send_message(text="wasn't able to apply the edit.\nError: " + str(e), chat_id=query.message.chat_id)
                 del editing[str(query.message.chat_id)]
                 Save_Editors()
@@ -342,8 +343,8 @@ def button_prog(bot, update):
                     if jb.ID == int(query.message.chat_id):
                         name = jb.En_Name
                         break
-                print name + " started editing " + editing[str(query.message.chat_id)]["JBer"].En_Name + "'s info @ " + str(datetime.datetime.now())
-                logs = open("logs.txt","a")
+                print(name + " started editing " + editing[str(query.message.chat_id)]["JBer"].En_Name + "'s info @ " + str(datetime.datetime.now()))
+                logs = open( work_dir + "logs.txt","a")
                 logs.write(name + " started editing " + editing[str(query.message.chat_id)]["JBer"].En_Name + "'s info @ " + str(datetime.datetime.now()) + "\n")
                 logs.close()
                 
@@ -360,7 +361,7 @@ def button_prog(bot, update):
                 Save_Editors()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -369,8 +370,8 @@ def prog(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/programmes' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/programmes' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/programmes' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -386,7 +387,7 @@ def prog(bot, update):
         update.message.reply_text('What program do you want to read about?', reply_markup=reply_markup)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -395,8 +396,8 @@ def grade(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/grades' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/grades' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/grades' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -410,7 +411,7 @@ def grade(bot, update):
         update.message.reply_text('What grade do you want to know about?', reply_markup=reply_markup)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -419,8 +420,8 @@ def energizer(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/energizer' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/energizer' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/energizer' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -454,7 +455,7 @@ def energizer(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text=txt)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -464,13 +465,13 @@ def Njr(bot, update):
         global JB_names
         iknow = InFile(bot, update)
         name = get_full_name(update)
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         if iknow:
             NJRs = []
             for jb in JB_names:
                 if "JB!!!" in jb.Roles:
                     NJRs.append(jb)
-            print name + " used '/Njrs' @ " + str(datetime.datetime.now())
+            print(name + " used '/Njrs' @ " + str(datetime.datetime.now()))
             if not is_ascii(name):
                 logs.write("nonASCII used '/Njrs' @ " + str(datetime.datetime.now()) + "\n")
             else:
@@ -480,7 +481,7 @@ def Njr(bot, update):
                 txt += NJRs[i].En_Name + " " + NJRs[i].Phone + "\n"
             bot.send_message(chat_id=update.message.chat_id, text=txt)
         else:
-            print name + " failed to use '/Njrs' @ " + str(datetime.datetime.now())
+            print(name + " failed to use '/Njrs' @ " + str(datetime.datetime.now()))
             if not is_ascii(name):
                 logs.write("nonASCII failed to use '/Njrs' @ " + str(datetime.datetime.now()) + "\n")
             else:
@@ -490,7 +491,7 @@ def Njr(bot, update):
         logs.close()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -499,10 +500,10 @@ def name_search(bot, update):
     try:
         iknow = InFile(bot, update)
         full_name = get_full_name(update)
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         global JB_names
         if iknow:
-            print full_name + " used '/jb_phone' @ " + str(datetime.datetime.now())
+            print(full_name + " used '/jb_phone' @ " + str(datetime.datetime.now()))
             if not is_ascii(full_name):
                 logs.write("nonASCII used '/jb_phone' @ " + str(datetime.datetime.now()) + "\n")
             else:
@@ -523,7 +524,7 @@ def name_search(bot, update):
         logs.close()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -534,7 +535,7 @@ def name_search(bot, update):
     names = update.message.text
     results = []
     names = names.split(" ")
-    logs = open("logs.txt","a")
+    logs = open( work_dir + "logs.txt","a")
     if len(names) <= 1:
         if not is_ascii(update.message.from_user.first_name):
             logs.write("Barogel" + " used '/board_phone' without a name @ " + str(datetime.datetime.now()) + "\n")
@@ -581,10 +582,10 @@ def name_search(bot, update):
 def emberes(bot, update):
     try:
         iknow = InFile(bot, update)
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         name = get_full_name(update)
         if iknow:
-            print name + " used '/embarrassment' @ " + str(datetime.datetime.now())
+            print(name + " used '/embarrassment' @ " + str(datetime.datetime.now()))
             if not is_ascii(name):
                 logs.write("nonASCII used '/embarrassment' @ " + str(datetime.datetime.now()) + "\n")
             else:
@@ -594,9 +595,9 @@ def emberes(bot, update):
             if not os.path.exists(work_dir + "embarrassment\\" + name):
                 if name in folders[u'embarrassment']:
                     download_file_from_google_drive(folders[u'embarrassment'][name]["file_id"], work_dir + "embarrassment\\" + name)
-            bot.send_photo(chat_id=update.message.chat_id, photo=open(work_dir + "embarrassment\\" + name, "rb"))
+            bot.send_photo(chat_id=update.message.chat_id, photo=open( work_dir + work_dir + "embarrassment\\" + name, "rb"))
         else:
-            print name + " failed to use '/embarrassment' @ " + str(datetime.datetime.now())
+            print(name + " failed to use '/embarrassment' @ " + str(datetime.datetime.now()))
             if not is_ascii(name):
                 logs.write(name + " failed to use '/embarrassment' @ " + str(datetime.datetime.now()) + "\n")
             else:
@@ -606,7 +607,7 @@ def emberes(bot, update):
         logs.close()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -616,8 +617,8 @@ def bannana(bot, update):
         global banana_arr
         InFile(bot, update)
         name = get_full_name(update)
-        logs = open("logs.txt","a")
-        print name + " used '/banana' @ " + str(datetime.datetime.now())
+        logs = open( work_dir + "logs.txt","a")
+        print(name + " used '/banana' @ " + str(datetime.datetime.now()))
         if not is_ascii(name):
             logs.write("nonASCII used '/banana' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -628,10 +629,10 @@ def bannana(bot, update):
         if not os.path.exists(work_dir + "bananas\\" + name):
             if name in folders[u'Bananas']:
                 download_file_from_google_drive(folders[u'Bananas'][name]["file_id"], work_dir + "bananas\\" + name)
-        bot.send_photo(chat_id=update.message.chat_id, photo=open(work_dir + "bananas\\" + name, "rb"))
+        bot.send_photo(chat_id=update.message.chat_id, photo=open( work_dir + work_dir + "bananas\\" + name, "rb"))
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -641,8 +642,8 @@ def jbb(bot, update):
         global JB_names
         InFile(bot, update)
         name = get_full_name(update)
-        logs = open("logs.txt","a")
-        print name + " used '/jb_board' @ " + str(datetime.datetime.now())
+        logs = open( work_dir + "logs.txt","a")
+        print(name + " used '/jb_board' @ " + str(datetime.datetime.now()))
         if not is_ascii(name):
             logs.write("nonASCII used '/jb_board' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -672,7 +673,7 @@ def jbb(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=txt)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -681,8 +682,8 @@ def addjb(bot, update):
     try:
         global newbies, JB_names
         if update.message.chat.type != "private":
-            with open("logs.txt","a") as logs:
-                print name + " used '/add_jber' in a group @ " + str(datetime.datetime.now())
+            with open( work_dir + "logs.txt","a") as logs:
+                print(name + " used '/add_jber' in a group @ " + str(datetime.datetime.now()))
                 if not is_ascii(name):
                     logs.write("nonASCII used '/add_jber' in a group @ " + str(datetime.datetime.now()) + "\n")
                 else:
@@ -698,7 +699,7 @@ def addjb(bot, update):
                 newbie = None
             if newbie != None:
                 name = get_full_name(update)
-                logs = open("logs.txt","a")
+                logs = open( work_dir + "logs.txt","a")
                 if iknow:
                     bot.send_message(chat_id=update.message.chat_id, text="You are already in my list, I don't need to take your information.")
                 elif str(update.message.chat_id) in newbies:
@@ -708,7 +709,7 @@ def addjb(bot, update):
                     if txt != "":
                         bot.send_message(text=txt, chat_id=update.message.chat_id, parse_mode='Markdown')
                 else:
-                    print "started taking info from " + name + " @ " + str(datetime.datetime.now())
+                    print("started taking info from " + name + " @ " + str(datetime.datetime.now()))
                     if not is_ascii(name):
                         logs.write("started taking info from nonASCII @ " + str(datetime.datetime.now()) + "\n")
                     else:
@@ -718,15 +719,15 @@ def addjb(bot, update):
                         newbies[str(update.message.chat_id)] = {"JBer":newJB, "stage":0}
                         Save_Newbies()
                         bot.send_message(chat_id=update.message.chat_id, text="First, what is your full name in English?")
-                    except Exception, e:
-                        print str(e)
+                    except Exception as e:
+                        print(str(e))
                 logs.close()
             else:
                 bot.send_message(chat_id=update.message.chat_id, text="I am sorry, mother always told me not to talk to strangers.")
                 bot.send_message(chat_id=update.message.chat_id, text="If there is a problem, contact Oz Sabbag @sexycow69")
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -754,7 +755,7 @@ def Again_Question(bot, jber, num):
             return ""
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -763,8 +764,8 @@ def addenergy(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/add_energizer' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/add_energizer' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/add_energizer' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -775,7 +776,7 @@ def addenergy(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="http://bit.ly/2rZwZYe")
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -784,8 +785,8 @@ def help(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/help' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/help' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/help' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -815,7 +816,7 @@ def help(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=txt)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -825,20 +826,20 @@ def birthday(bot, update):
     try:
         if brday != str(datetime.datetime.now().day) + "-" + str(datetime.datetime.now().month):
             brday = str(datetime.datetime.now().day) + "-" + str(datetime.datetime.now().month)
-            logs = open("logs.txt", "a")
-            print "brday is now %s" % brday
+            logs = open( work_dir + "logs.txt", "a")
+            print("brday is now %s" % brday)
             logs.write("brday is now %s\n" % brday)
             for i in JB_names:
                 if brday == i.Birthday:
-                    print "it's " + i.En_Name + "'s Birthday!"
+                    print("it's " + i.En_Name + "'s Birthday!")
                     logs.write("it's " + i.En_Name + "'s Birthday!\n")
-                    txt = wishes[random.randint(0,len(wishes))]
+                    txt = wishes[random.randint(0,len(wishes) - 1)]
                     txt += "\n מזל טוב {} 🎉🎊🎁❤️❤️".format(i.He_Name)
                     bot.send_message(chat_id=JB_group_id,text=txt)
             logs.close()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -846,15 +847,15 @@ def birthday(bot, update):
 def again_bd(bot, update):
     try:
         global brday
-        logs = open("logs.txt", "a")
+        logs = open( work_dir + "logs.txt", "a")
         logs.write("retrying bday\n")
-        print ("retrying bday")
+        print("retrying bday")
         logs.close()
         brday = "30-2"
         birthday(bot, update)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -863,8 +864,8 @@ def lullabies(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/lullaby' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/lullaby' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/lullaby' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -898,7 +899,7 @@ def lullabies(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text=txt)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -907,8 +908,8 @@ def addsong(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/add_lullaby' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/add_lullaby' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/add_lullaby' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -918,7 +919,7 @@ def addsong(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="http://bit.ly/2rZwZYe")
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -932,12 +933,12 @@ def info(bot, update):
             names = names.split(" ")
             full_name = get_full_name(update)
             if len(names) <= 1:
-                print full_name + " found out about '/info' @ " + str(datetime.datetime.now())
+                print(full_name + " found out about '/info' @ " + str(datetime.datetime.now()))
                 bot.send_message(chat_id=update.message.chat_id,
                                  text="Please add a name after \"/info\", i.e: \"/info Doris\"")
                 return
             name = get_input(names)
-            print full_name + " used '/info' and looked for " + name + " @ " + str(datetime.datetime.now())
+            print(full_name + " used '/info' and looked for " + name + " @ " + str(datetime.datetime.now()))
             for jb in JB_names:
                 if name.lower() in jb.En_Name.lower() or "all" in name.lower() or name.encode("utf8") in jb.He_Name or name.encode("utf8") == "כולם":
                     results.append(jb)
@@ -956,7 +957,7 @@ def info(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text=txt)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -965,8 +966,8 @@ def nextEvent(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/next_event' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/next_event' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/next_event' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -1013,7 +1014,7 @@ def nextEvent(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=oneEvent)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1022,8 +1023,8 @@ def eventThisMonth(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/this_month' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/this_month' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/this_month' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -1068,7 +1069,7 @@ def eventThisMonth(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=Eventim)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1077,8 +1078,8 @@ def eventNextMonth(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/next_month' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/next_month' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/next_month' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -1130,7 +1131,7 @@ def eventNextMonth(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=oneEvent)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1139,8 +1140,8 @@ def nextActivity(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/next_activity' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/next_activity' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/next_activity' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -1187,7 +1188,7 @@ def nextActivity(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=oneEvent)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1196,8 +1197,8 @@ def eventChooseMonth(bot, update):
     try:
         InFile(bot, update)
         name = get_full_name(update)
-        print name + " used '/schedule_for' @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print(name + " used '/schedule_for' @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         if not is_ascii(name):
             logs.write("nonASCII used '/schedule_for' @ " + str(datetime.datetime.now()) + "\n")
         else:
@@ -1284,7 +1285,7 @@ def eventChooseMonth(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=oneEvent)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1331,7 +1332,7 @@ def newMonth(bot, update):
             bot.send_message(chat_id=JB_group_id, text=Eventim)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1344,14 +1345,14 @@ def logs(bot, update):
                 user = "nonASCII used '/log' @ " + str(datetime.datetime.now())
             else:
                 user = name + " used '/log' @ " + str(datetime.datetime.now())
-            logf = open("logs.txt", 'r')
+            logf = open( work_dir + "logs.txt", 'r')
             rawdata = logf.read()
             with open(work_dir + "permanent_log.txt", "a") as per_log:
                 per_log.write(rawdata)
                 per_log.close()
             splitted = rawdata.split(chr(10))
             logf.close()
-            logf = open("logs.txt", "w")
+            logf = open( work_dir + "logs.txt", "w")
             logf.write(user + "\n")
             logf.close()
             data = ""
@@ -1363,7 +1364,7 @@ def logs(bot, update):
             bot.send_message(chat_id=update.message.chat_id, text=data)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1376,22 +1377,22 @@ def Per_log(bot, update):
                 user = "nonASCII requested permanent_log.txt @ " + str(datetime.datetime.now())
             else:
                 user = name + " requested permanent_log.txt @ " + str(datetime.datetime.now())
-            logf = open("logs.txt", 'r')
+            logf = open( work_dir + "logs.txt", 'r')
             rawdata = logf.read()
             logf.close()
-            logf = open("logs.txt", 'w')
+            logf = open( work_dir + "logs.txt", 'w')
             logf.close()
             with open(work_dir + "permanent_log.txt", "a") as per_log:
                 per_log.write(rawdata)
                 per_log.close()
-            logf = open("logs.txt", 'a')
+            logf = open( work_dir + "logs.txt", 'a')
             logf.write(user + '\n')
             logf.close()
             bot.send_message(chat_id=update.message.chat_id, text="file for " + str(datetime.datetime.now()))
             bot.send_document(chat_id=update.message.chat_id, document=open(work_dir + "permanent_log.txt", 'rb'))
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
     
@@ -1401,15 +1402,15 @@ def Refresh_Command(bot, update):
         global JB_names, newbies, editing, activitors, folders, energizers, lullaby, grades
         JB_names, newbies, editing, activitors, folders, energizers, lullaby, grades = refresh()
                     
-        print "The data was refreshed @ " + str(datetime.datetime.now())
-        logs = open("logs.txt","a")
+        print("The data was refreshed @ " + str(datetime.datetime.now()))
+        logs = open( work_dir + "logs.txt","a")
         logs.write("The data was refreshed @ " + str(datetime.datetime.now()) + "\n")
         logs.close()
         
         bot.send_message(chat_id=update.message.chat_id, text="I refreshed the data")
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1708,7 +1709,7 @@ def info_gather(bot, update):
             InFile(bot, update)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1732,7 +1733,7 @@ def View_Newbies(bot, update):
             bot.send_message(chat_id=update.message.chat_id, text=txt)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1746,7 +1747,7 @@ def Remove_Newbie(bot, update):
             bot.send_message(chat_id=update.message.chat_id, text="removed " + id_num)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1791,7 +1792,7 @@ def Admin(bot, update):
             bot.send_message(text=txt, chat_id=update.message.chat_id)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1802,9 +1803,9 @@ def Anonymous(bot, update):
             if update.message.chat.type == "private":
                 message = get_input(update.message.text.lower().split(" "))
                 if message != "":
-                    with open("logs.txt", 'a') as logf:
+                    with open( work_dir + "logs.txt", 'a') as logf:
                         encrypted = int(update.message.from_user.id) * int(update.message.from_user.id)
-                        print "the person with ID sqrt("+ str(encrypted) + ") sent an anonymous message @ " + str(datetime.datetime.now()) + "\n"
+                        print("the person with ID sqrt("+ str(encrypted) + ") sent an anonymous message @ " + str(datetime.datetime.now())) + "\n"
                         logf.write("sqrt("+ str(encrypted) + ") sent an anonymous message @ " + str(datetime.datetime.now()) + "\n")
                         logf.close()
                     txt = "*New Anonymous Message:*\n" + message
@@ -1812,7 +1813,7 @@ def Anonymous(bot, update):
                     bot.send_message(text=send, chat_id=JB_group_id, parse_mode='Markdown')
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1842,7 +1843,7 @@ def Edit(bot, update):
                         bot.send_message(text=txt, chat_id=update.message.chat_id)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
                     
@@ -1853,8 +1854,8 @@ def Get_Self(bot, update):
             jber = None
             if update.message.chat.type == "private":
                 name = get_full_name(update)
-                print name + " used '/get_me' @ " + str(datetime.datetime.now())
-                logs = open("logs.txt","a")
+                print(name + " used '/get_me' @ " + str(datetime.datetime.now()))
+                logs = open( work_dir + "logs.txt","a")
                 if not is_ascii(name):
                     logs.write("nonASCII used '/get_me' @ " + str(datetime.datetime.now()) + "\n")
                 else:
@@ -1896,7 +1897,7 @@ def Get_Self(bot, update):
                     bot.send_message(text="I don't have any info on you.\nYou can start a new conversation with me by pressing /start and I'll check again", chat_id=update.message.chat_id)
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1908,8 +1909,8 @@ def Activities(bot, update):
         if InFile(bot, update):
             if update.message.chat.type == "private":
                 name = get_full_name(update)
-                print name + " used '/activity' @ " + str(datetime.datetime.now())
-                logs = open("logs.txt","a")
+                print(name + " used '/activity' @ " + str(datetime.datetime.now()))
+                logs = open( work_dir + "logs.txt","a")
                 if not is_ascii(name):
                     logs.write("nonASCII used '/activity' @ " + str(datetime.datetime.now()) + "\n")
                 else:
@@ -1949,7 +1950,7 @@ def Activities(bot, update):
                         txt = "I found multiple activities that fit your search, which one would you like me to send you?\nYou can choose as many as you like, just hit 'END' when you're finished"
                         msg = bot.send_message(text=txt, chat_id=update.message.chat_id, reply_markup=reply_markup)
                         activitors[str(update.message.chat_id)]["messageID"] = msg.message_id
-                    Save_activitors()
+                    Save_Activitors()
                 else:
                     keyboard = get_keyboard(grades, 3)
                     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
@@ -1960,7 +1961,7 @@ def Activities(bot, update):
                     Save_Activitors()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
     
@@ -1973,7 +1974,7 @@ def DevMessage(bot, update):
             bot.send_message(text=send, chat_id=JB_group_id, parse_mode='Markdown')
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
 
@@ -1981,7 +1982,7 @@ def DevMessage(bot, update):
 def stop(bot, update):
     try:
         if InFile(bot, update) and IsDev(update.message.chat_id):
-            with open("logs.txt", "a") as logf:
+            with open( work_dir + "logs.txt", "a") as logf:
                 logf.write("terminating bot @ " + str(datetime.datetime.now()) + "\n")
                 logf.close()
             bot.send_message(text="termanating bot", chat_id=update.message.chat_id)
@@ -1989,20 +1990,20 @@ def stop(bot, update):
             sys.exit()
     except:
         print(traceback.format_exc())
-        logs = open("logs.txt","a")
+        logs = open( work_dir + "logs.txt","a")
         logs.write(str(traceback.format_exc()) + "\n")
         logs.close()
         
 
-print "REMEMBER TO /EXIT BEFORE CLOSING!!!"
+print("REMEMBER TO /EXIT BEFORE CLOSING!!!")
 if not os.path.exists("logs.txt"):
-    logf = open("logs.txt", 'w')
+    logf = open( work_dir + "logs.txt", 'w')
     logf.close()
-with open("logs.txt", "a") as logf:
+with open( work_dir + "logs.txt", "a") as logf:
     logf.write("started the bot @ " + str(datetime.datetime.now()) + "\n")
     logf.close()
 bot_token = ""
-with open("bot_id.txt", "r") as botID:
+with open( work_dir + "bot_id.txt", "r") as botID:
     bot_token = botID.read()
     botID.close()
 if bot_token != "":
