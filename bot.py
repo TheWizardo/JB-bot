@@ -185,7 +185,7 @@ def button_prog(bot, update):
                 for l in leaders:
                     txt += l + ", "
                 txt = txt[:-2]
-                txt += "\nIf you need to contact any one of them, use /jb_phone <name>"
+                txt += "\nIf you need to contact any one of them, use /jb_phone"
             else:
                 txt = "There are no leaders for the " + grades_arr[query_data] + " grade\nWhat will we do???"
             bot.edit_message_text(text=txt, chat_id=query.message.chat_id, message_id=query.message.message_id)
@@ -832,7 +832,7 @@ def birthday(bot, update):
                 if brday == i.Birthday:
                     print "it's " + i.En_Name + "'s Birthday!"
                     logs.write("it's " + i.En_Name + "'s Birthday!\n")
-                    txt = wishes[random.randint(0,len(wishes))]
+                    txt = wishes[random.randint(0,len(wishes) - 1)]
                     txt += "\n מזל טוב {} 🎉🎊🎁❤️❤️".format(i.He_Name)
                     bot.send_message(chat_id=JB_group_id,text=txt)
             logs.close()
@@ -1949,7 +1949,7 @@ def Activities(bot, update):
                         txt = "I found multiple activities that fit your search, which one would you like me to send you?\nYou can choose as many as you like, just hit 'END' when you're finished"
                         msg = bot.send_message(text=txt, chat_id=update.message.chat_id, reply_markup=reply_markup)
                         activitors[str(update.message.chat_id)]["messageID"] = msg.message_id
-                    Save_activitors()
+                    Save_Activitors()
                 else:
                     keyboard = get_keyboard(grades, 3)
                     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
